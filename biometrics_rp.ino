@@ -4,6 +4,8 @@
 #define BUTTON_PIN_ENTRANCE 7
 #define DETECT_OFF_PIN 6
 
+ezButton entranceButton(7);
+
 uint8_t id = 0;
 
 #if (defined(__AVR__) || defined(ESP8266)) && !defined(__AVR_ATmega2560__)
@@ -29,16 +31,12 @@ Adafruit_Fingerprint finger_exit = Adafruit_Fingerprint(&exitSerial);
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  entranceButton.setDebounceTime(50);
   
   pinMode(DETECT_PIN, OUTPUT);
 
   exitSerial.begin(57600);
   finger_exit.LEDcontrol(false);
-  
-  if (finger_exit.verifyPassword()) {
-    Serial.println("Found finger_exit sensor!");
-  }
-
   exitSerial.end();
 }
 
